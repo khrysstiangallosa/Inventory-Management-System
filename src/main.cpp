@@ -1,5 +1,7 @@
 #include <iostream>
 #include <limits>
+#include <vector> // for storing products and testing vectors for learning purposes
+#include <string>
 using namespace std;
 
 //forward declaration of functions
@@ -11,6 +13,14 @@ void viewInventory();
 void product1();
 void product2();
 int validateInput(); // handles bad inputs
+
+struct Product {
+    string name;
+    int quantity;
+    double price;
+};
+
+vector<Product>& getInventory();
 
 int main(){
 // Menu Display
@@ -46,22 +56,28 @@ else cout<< "Invalid option. Please try again." << endl;
 }
 
 void viewProducts(){
-    int choice;
-    while(true){
-    cout<< "1. Product 1" << endl;
-    cout<< "2. Product 2" << endl;
-    cout<< "3. Return to main menu" << endl;
-    cout<< "Choice: ";
-    choice = validateInput();
-
-    if (choice == 1) product1();
-    else if (choice == 2) product2();
-    else if (choice == 3) break;
-    while (choice != 1 && choice != 2 && choice != 3) {
-        cout<< "Invalid option. Please try again." << endl;
-        choice = validateInput();
+    if (getInventory().empty()) {
+        cout << "No products available." << endl;
+        return;
     }
-}
+    else {
+        cout << "Available products:" << endl;
+        for (size_t i = 0; i < getInventory().size(); ++i) {
+            cout << i + 1 << ". " << getInventory()[i].name << endl;
+        }   
+        cout << "Select a product to view details (or 0 to return): ";
+        int choice = validateInput();
+        if (choice >= 1 && choice <= static_cast<int>(getInventory().size())) {
+            // Display details for the selected product
+            cout << "Product Name: " << getInventory()[choice - 1].name << endl;
+            cout << "Product Quantity: " << getInventory()[choice - 1].quantity << endl;
+            cout << "Product Price: " << getInventory()[choice - 1].price << endl;
+        } else if (choice == 0) {
+            return;
+        } else {
+            cout << "Invalid option. Please try again." << endl;
+        }
+    }
 }
 
 void product1(){
@@ -92,18 +108,16 @@ void product2(){
         }
 }
 
-struct Product {
-    string name;
-    int quantity;
-    double price;
-};
+vector<Product>& getInventory() {
+    static vector<Product> inventory; // static to persist across function calls
+    return inventory;
+}
+
 
 void addProduct(){
     Product newProduct;
 
     cout<< "What product would you like to add? (Press Enter to continue)"<< endl;
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear the input buffer
     
     cout<< "Enter product name: " << endl;
     getline(cin, newProduct.name);
@@ -136,8 +150,8 @@ void addProduct(){
         }
     }
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear the input buffer
 
+    getInventory().push_back(newProduct);
     cout<< "Product added successfully!" << endl;
     cout<< "Product Name: " << newProduct.name << endl;
     cout<< "Product Quantity: " << newProduct.quantity << endl;
@@ -157,9 +171,12 @@ void deleteProduct(){
 }
 
 void viewInventory(){
-    //int choice;
-    cout<< "Viewing inventory..." << endl;
-    // Code to view inventory goes here
+   for (const Product& product : getInventory()) {
+        cout << "Product Name: " << product.name << endl;
+        cout << "Product Quantity: " << product.quantity << endl;
+        cout << "Product Price: " << product.price << endl;
+        cout << "-------------------------" << endl;
+    }
 }
 
 //reusable function to validate user input
