@@ -10,7 +10,7 @@ void deleteProduct();
 void viewInventory();
 void product1();
 void product2();
-int ValidateInput(); // handles bad inputs
+int validateInput(); // handles bad inputs
 
 int main(){
 // Menu Display
@@ -28,7 +28,7 @@ cout<< "5. View inventory" << endl;
 cout<< "6. Exit" << endl<< endl;
 cout<< "Select an option: "; 
 
-choice = ValidateInput();
+choice = validateInput();
 
 if (choice ==1) viewProducts();
 else if (choice ==2) addProduct();
@@ -52,14 +52,14 @@ void viewProducts(){
     cout<< "2. Product 2" << endl;
     cout<< "3. Return to main menu" << endl;
     cout<< "Choice: ";
-    choice = ValidateInput();
+    choice = validateInput();
 
     if (choice == 1) product1();
     else if (choice == 2) product2();
     else if (choice == 3) break;
     while (choice != 1 && choice != 2 && choice != 3) {
         cout<< "Invalid option. Please try again." << endl;
-        choice = ValidateInput();
+        choice = validateInput();
     }
 }
 }
@@ -68,7 +68,7 @@ void product1(){
     int choice;
     cout<< "Displaying details for Product 1..." << endl;
     cout<< "0. Return to Products menu" << endl;
-    choice = ValidateInput();
+    choice = validateInput();
 
         if (choice == 0) {
             return;
@@ -82,7 +82,7 @@ void product2(){
     int choice;
     cout<< "Displaying details for Product 2..." << endl;
     cout<< "0. Return to Products menu" << endl;
-    choice = ValidateInput();
+    choice = validateInput();
 
      if (choice == 0) {
             return;
@@ -92,10 +92,56 @@ void product2(){
         }
 }
 
+struct Product {
+    string name;
+    int quantity;
+    double price;
+};
+
 void addProduct(){
-   // int choice;
-    cout<< "Adding product..." << endl;
-    // Code to add product goes here
+    Product newProduct;
+
+    cout<< "What product would you like to add? (Press Enter to continue)"<< endl;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear the input buffer
+    
+    cout<< "Enter product name: " << endl;
+    getline(cin, newProduct.name);
+
+    cout<< "Enter product quantity: ";
+    while (true) {
+        cin >> newProduct.quantity;
+        if (cin.fail() || newProduct.quantity < 0) {
+            cin.clear(); // clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << "Invalid input. Please enter a non-negative number for quantity: ";
+        } 
+        else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard any extra input
+            break;
+        }
+    }
+
+    cout<< "Enter product price: ";
+    while (true) {
+        cin >> newProduct.price;
+        if (cin.fail() || newProduct.price < 0) {
+            cin.clear(); // clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << "Invalid input. Please enter a non-negative number for price: ";
+        } 
+        else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard any extra input
+            break;
+        }
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear the input buffer
+
+    cout<< "Product added successfully!" << endl;
+    cout<< "Product Name: " << newProduct.name << endl;
+    cout<< "Product Quantity: " << newProduct.quantity << endl;
+    cout<< "Product Price: " << newProduct.price << endl;
 }
 
 void updateProduct(){
@@ -117,7 +163,7 @@ void viewInventory(){
 }
 
 //reusable function to validate user input
-int ValidateInput() {
+int validateInput() {
     int input;
     while (true) {
         cin >> input;
@@ -125,7 +171,8 @@ int ValidateInput() {
             cin.clear(); // clear the error flag
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
             cout << "Invalid input. Please enter a number: ";
-        } else {
+        } 
+        else {
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard any extra input
             return input;
         }
