@@ -10,8 +10,6 @@ void addProduct();
 void updateProduct();
 void deleteProduct();
 void viewInventory();
-void product1();
-void product2();
 int validateInput(); // handles bad inputs
 
 struct Product {
@@ -78,34 +76,6 @@ void viewProducts(){
             cout << "Invalid option. Please try again." << endl;
         }
     }
-}
-
-void product1(){
-    int choice;
-    cout<< "Displaying details for Product 1..." << endl;
-    cout<< "0. Return to Products menu" << endl;
-    choice = validateInput();
-
-        if (choice == 0) {
-            return;
-        }
-        else {
-            cout<< "Invalid option. Please try again." << endl;
-        }
-}
-
-void product2(){
-    int choice;
-    cout<< "Displaying details for Product 2..." << endl;
-    cout<< "0. Return to Products menu" << endl;
-    choice = validateInput();
-
-     if (choice == 0) {
-            return;
-        }
-        else {
-            cout<< "Invalid option. Please try again." << endl;
-        }
 }
 
 vector<Product>& getInventory() {
