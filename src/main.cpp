@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 using namespace std;
 
 //forward declaration of functions
@@ -9,8 +10,7 @@ void deleteProduct();
 void viewInventory();
 void product1();
 void product2();
-
-
+int ValidateInput(); // handles bad inputs
 
 int main(){
 // Menu Display
@@ -27,7 +27,8 @@ cout<< "4. Delete product" << endl;
 cout<< "5. View inventory" << endl;
 cout<< "6. Exit" << endl<< endl;
 cout<< "Select an option: "; 
-cin>> choice;
+
+choice = ValidateInput();
 
 if (choice ==1) viewProducts();
 else if (choice ==2) addProduct();
@@ -51,14 +52,14 @@ void viewProducts(){
     cout<< "2. Product 2" << endl;
     cout<< "3. Return to main menu" << endl;
     cout<< "Choice: ";
-    cin>>choice;
+    choice = ValidateInput();
 
     if (choice == 1) product1();
     else if (choice == 2) product2();
     else if (choice == 3) break;
     while (choice != 1 && choice != 2 && choice != 3) {
         cout<< "Invalid option. Please try again." << endl;
-        break;
+        choice = ValidateInput();
     }
 }
 }
@@ -67,26 +68,28 @@ void product1(){
     int choice;
     cout<< "Displaying details for Product 1..." << endl;
     cout<< "0. Return to Products menu" << endl;
-    cin >> choice;
+    choice = ValidateInput();
 
-        while (choice != 0) {
-        cout<< "Invalid option. Please try again." << endl;
-        cin>> choice;
+        if (choice == 0) {
+            return;
         }
-        if (choice == 0) return;
+        else {
+            cout<< "Invalid option. Please try again." << endl;
+        }
 }
 
 void product2(){
     int choice;
     cout<< "Displaying details for Product 2..." << endl;
     cout<< "0. Return to Products menu" << endl;
-    cin >> choice;
+    choice = ValidateInput();
 
- while (choice != 0) {
-        cout<< "Invalid option. Please try again." << endl;
-        cin>> choice;
+     if (choice == 0) {
+            return;
         }
-        if (choice == 0) return;
+        else {
+            cout<< "Invalid option. Please try again." << endl;
+        }
 }
 
 void addProduct(){
@@ -113,3 +116,18 @@ void viewInventory(){
     // Code to view inventory goes here
 }
 
+//reusable function to validate user input
+int ValidateInput() {
+    int input;
+    while (true) {
+        cin >> input;
+        if (cin.fail()) {
+            cin.clear(); // clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << "Invalid input. Please enter a number: ";
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard any extra input
+            return input;
+        }
+    }
+}
