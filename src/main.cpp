@@ -129,9 +129,47 @@ void addProduct(){
 }
 
 void updateProduct(){
-   // int choice;
-    cout<< "Updating product..." << endl;
-    // Code to update product goes here
+  if (getInventory().empty()) {
+        cout << "No products available." << endl;
+        return;
+    }
+    else {
+        cout << "Available products:" << endl;
+        for (size_t i = 0; i < getInventory().size(); ++i) {
+            cout << i + 1 << ". " << getInventory()[i].name << endl;
+        }
+        int choice = validateInput();
+        if (choice >= 1 && choice <= static_cast<int>(getInventory().size())) {
+            Product& productToUpdate = getInventory()[choice - 1];
+            cout << "Updating product: " << productToUpdate.name << endl;
+
+            cout << "Enter new product name (or press Enter to keep current): ";
+            string newName;
+            cin.ignore(); // Clear the newline character from the input buffer
+            getline(cin, newName);
+            if (!newName.empty()) {
+                productToUpdate.name = newName;
+            }
+
+            cout << "Enter new product quantity (or -1 to keep current): ";
+            int newQuantity;
+            cin >> newQuantity;
+            if (newQuantity >= 0) {
+                productToUpdate.quantity = newQuantity;
+            }
+
+            cout << "Enter new product price (or -1 to keep current): ";
+            double newPrice;
+            cin >> newPrice;
+            if (newPrice >= 0) {
+                productToUpdate.price = newPrice;
+            }
+
+            cout << "Product updated successfully!" << endl;
+        } else {
+            cout << "Invalid option. Please try again." << endl;
+        }   
+    }
 }
 
 void deleteProduct(){
