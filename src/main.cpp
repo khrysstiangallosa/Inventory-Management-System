@@ -56,7 +56,8 @@ else cout<< "Invalid option. Please try again." << endl;
 void viewProducts(){
     if (getInventory().empty()) {
         cout << "No products available." << endl;
-        return;
+        cout << "Press 0 to return to the main menu." << endl;
+        validateInput(); // Wait for user input to return to the main menu
     }
     else {
         cout << "Available products:" << endl;
@@ -70,10 +71,14 @@ void viewProducts(){
             cout << "Product Name: " << getInventory()[choice - 1].name << endl;
             cout << "Product Quantity: " << getInventory()[choice - 1].quantity << endl;
             cout << "Product Price: " << getInventory()[choice - 1].price << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
         } else if (choice == 0) {
             return;
         } else {
             cout << "Invalid option. Please try again." << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
         }
     }
 }
@@ -126,12 +131,15 @@ void addProduct(){
     cout<< "Product Name: " << newProduct.name << endl;
     cout<< "Product Quantity: " << newProduct.quantity << endl;
     cout<< "Product Price: " << newProduct.price << endl;
+    cout << "Press 0 to return to the main menu." << endl;
+    validateInput();
 }
 
 void updateProduct(){
   if (getInventory().empty()) {
         cout << "No products available." << endl;
-        return;
+        cout << "Press 0 to return to the main menu." << endl;
+        validateInput(); // Wait for user input to return to the main menu
     }
     else {
         cout << "Available products:" << endl;
@@ -166,16 +174,39 @@ void updateProduct(){
             }
 
             cout << "Product updated successfully!" << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
         } else {
             cout << "Invalid option. Please try again." << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
         }   
     }
 }
 
 void deleteProduct(){
-    //int choice;
-    cout<< "Deleting product..." << endl;
-    // Code to delete product goes here
+     if (getInventory().empty()) {
+        cout << "No products available." << endl;
+        cout << "Press 0 to return to the main menu." << endl;
+        validateInput(); // Wait for user input to return to the main menu
+    }
+    else {
+        cout << "Available products:" << endl;
+        for (size_t i = 0; i < getInventory().size(); ++i) {
+            cout << i + 1 << ". " << getInventory()[i].name << endl;
+        }
+        int choice = validateInput();
+        if (choice >= 1 && choice <= static_cast<int>(getInventory().size())) {
+            getInventory().erase(getInventory().begin() + choice - 1);
+            cout << "Product deleted successfully!" << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
+        } else {
+            cout << "Invalid option. Please try again." << endl;
+            cout << "Press 0 to return to the main menu." << endl;
+            validateInput(); // Wait for user input to return to the main menu
+        }
+    }
 }
 
 void viewInventory(){
@@ -184,6 +215,8 @@ void viewInventory(){
         cout << "Product Quantity: " << product.quantity << endl;
         cout << "Product Price: " << product.price << endl;
         cout << "-------------------------" << endl;
+        cout << "Press 0 to return to the main menu." << endl;
+        validateInput(); // Wait for user input to return to the main menu
     }
 }
 
